@@ -1,16 +1,16 @@
 const gl = @import("zgl");
 const math = @import("zlm");
-const c = @import("c.zig");
+const c = @import("../c.zig");
 const std = @import("std");
 
-const shaders = @import("shaders.zig");
+const shaders = @import("../shaders.zig");
 
-const vertex_shader_source = @embedFile("../../shaders/particules.vert");
-const frag_shader_source = @embedFile("../../shaders/particules.frag");
+const vertex_shader_source = @embedFile("../../../shaders/particules.vert");
+const frag_shader_source = @embedFile("../../../shaders/particules.frag");
 
 const triangle_count = 20;
 
-pub const ParticuleRenderer = struct {
+pub const ParticleRenderer = struct {
     const RendererInner = struct {
         vao: gl.VertexArray,
         vbo: gl.Buffer,
@@ -67,12 +67,12 @@ pub const ParticuleRenderer = struct {
 
     inner: RendererInner,
 
-    pub fn init(colors: []align(1) const f32) !ParticuleRenderer {
-        var pr = ParticuleRenderer{ .inner = try RendererInner.init() };
+    pub fn init(colors: []align(1) const f32) !ParticleRenderer {
+        var pr = ParticleRenderer{ .inner = try RendererInner.init() };
         pr.inner.vao.bind();
         // Mesh
         pr.inner.vbo.bind(gl.BufferTarget.array_buffer);
-        pr.loadParticuleMesh();
+        pr.loadParticleMesh();
         gl.vertexAttribPointer(0, 3, gl.Type.float, false, 3 * @sizeOf(f32), 0);
         gl.enableVertexAttribArray(0);
         gl.bindBuffer(gl.Buffer.invalid, gl.BufferTarget.array_buffer);
@@ -91,10 +91,10 @@ pub const ParticuleRenderer = struct {
         gl.bindBuffer(gl.Buffer.invalid, gl.BufferTarget.array_buffer);
         return pr;
     }
-    pub fn deinit(self: *ParticuleRenderer) void {
+    pub fn deinit(self: *ParticleRenderer) void {
         self.inner.deinit();
     }
-    pub fn draw(self: *ParticuleRenderer, pos: []align(1) const f32, view_proj: math.Mat4) void {
+    pub fn draw(self: *ParticleRenderer, pos: []align(1) const f32, view_proj: math.Mat4) void {
         self.inner.vao.bind();
         self.inner.ibo.data(f32, pos, gl.BufferUsage.stream_draw);
 
@@ -103,7 +103,7 @@ pub const ParticuleRenderer = struct {
 
         gl.drawArraysInstanced(gl.PrimitiveType.triangle_fan, 0, triangle_count + 2, pos.len / 4);
     }
-    fn loadParticuleMesh(self: *ParticuleRenderer) void {
+    fn loadParticleMesh(self: *ParticleRenderer) void {
         var vertices align(1) = [_]f32{0.0} ** (3 * (triangle_count + 2));
 
         var i: u32 = 0;

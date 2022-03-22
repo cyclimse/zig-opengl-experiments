@@ -67,7 +67,7 @@ pub fn build(b: *std.build.Builder) void {
     }
 
     {
-        const exe = b.addExecutable("particules", "src/demos/particules.zig");
+        const exe = b.addExecutable("particles", "src/demos/particles.zig");
         exe.setTarget(target);
         exe.setBuildMode(mode);
         buildExe(b, exe);
@@ -78,7 +78,7 @@ pub fn build(b: *std.build.Builder) void {
             run_cmd.addArgs(args);
         }
 
-        const run_step = b.step("particules", "Run the app");
+        const run_step = b.step("particles", "Run the app");
         run_step.dependOn(&run_cmd.step);
     }
 

@@ -1,6 +1,6 @@
 const gl = @import("zgl");
 const math = @import("zlm");
-const c = @import("c.zig");
+const c = @import("../c.zig");
 const std = @import("std");
 
 const buffer_size = 2048;
