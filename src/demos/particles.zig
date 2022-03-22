@@ -186,7 +186,7 @@ const World = struct {
     }
     fn setRandomParticles(self: *World) void {
         for (self.particles) |*p| {
-            p.radius = 0.05 * self.random.float(f32);
+            p.radius = 0.01 * self.random.floatNorm(f32) + 0.03;
             p.mass = Density * p.radius * p.radius;
             p.pos.x = std.math.clamp(2 * AspectRatio * self.random.float(f32) - AspectRatio, p.radius - AspectRatio, AspectRatio - p.radius);
             p.pos.y = std.math.clamp(2 * self.random.float(f32) - 1, p.radius - 1.0, 1.0 - p.radius);
